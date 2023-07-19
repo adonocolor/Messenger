@@ -13,7 +13,7 @@ export const Login = () => {
 
                         <Form.Control autoComplete={'off'} type={'text'} placeholder={'Email'} name={'email'}/>
                         <Form.Control type={'password'} placeholder={'Password'} name={'password'}/>
-                        <Button className={'form__button'} variant={'primary'} type={'sumbit'}>
+                        <Button className={'form__button'} variant={'primary'} type={'submit'}>
                             Let me in!
                         </Button>
                     </Stack>
