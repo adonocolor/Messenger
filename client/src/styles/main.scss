@@ -1,0 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Open+Sans&family=Roboto+Condensed&display=swap');
+@import './colors.scss';
+
+body {
+  background: $color_one;
+  color: $color_five;
+  font-family: 'Open Sans', sans-serif;
+}

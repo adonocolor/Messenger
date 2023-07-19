@@ -1,0 +1,12 @@
+@import './colors.scss';
+
+.form {
+  &__button {
+    background: $color_two !important;
+    border-color: $color_two !important;
+  }
+}
+
+  .form-control:focus {
+    border-color: $color_two !important;
+  }

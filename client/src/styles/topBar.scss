@@ -1,0 +1,10 @@
+@import './colors.scss';
+
+.topBar {
+  background: $color_two !important;
+  * {
+    color: $color_one !important;
+  }
+  margin: 0;
+  padding: 0;
+}
