@@ -7,6 +7,7 @@ const errorHandler = require('./middleware/errorHandler')
 require('dotenv').config()
 const cookieParser = require('cookie-parser')
 const credentials = require('./middleware/credentials')
+const { authenticateToken } = require('./middleware/authenticateToken')
 
 AppDataSource.initialize().then(async () => {
 
@@ -18,6 +19,8 @@ AppDataSource.initialize().then(async () => {
     app.use(cookieParser())
     app.use('/auth', require('./routes/authRouter'));
     app.use('/refresh', require('./routes/refreshTokenRoute'));
+    app.use(authenticateToken)
+    app.use('/user', require('./routes/userRoute'))
     app.use(errorHandler)
 
     app.listen(3000)
