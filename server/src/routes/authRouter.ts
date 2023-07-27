@@ -1,4 +1,6 @@
+// @ts-ignore
 const express = require('express')
+// @ts-ignore
 const router = express.Router();
 const {login, register} = require('../controllers/authController')
 

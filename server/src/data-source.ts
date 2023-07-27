@@ -3,6 +3,7 @@ import { DataSource } from "typeorm"
 import { User } from "./model/User"
 import {Message} from "./model/Message";
 import {Chat} from "./model/Chat";
+import {Token} from "./model/Token";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -13,7 +14,7 @@ export const AppDataSource = new DataSource({
     database: process.env.PGDATABASE,
     synchronize: true,
     logging: false,
-    entities: [User, Chat, Message],
+    entities: [User, Chat, Message, Token],
     migrations: [],
     subscribers: [],
 })

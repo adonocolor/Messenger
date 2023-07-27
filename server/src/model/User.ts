@@ -1,5 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn} from "typeorm"
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm"
 import {IsString} from "class-validator";
+import {Token} from "./Token";
 
 @Entity('users')
 export class User {
@@ -18,9 +19,9 @@ export class User {
     @IsString()
     password: string
 
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
+    @OneToMany(
+        type => Token,
+        token => token.user,
+    )
+    refreshTokens: Token[];
 }

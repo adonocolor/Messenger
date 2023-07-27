@@ -1,12 +1,28 @@
 import {AppDataSource} from "../data-source";
 import {User} from "../model/User";
 import validator from "validator";
+import {Token} from "../model/Token";
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const userRepository = AppDataSource.getRepository(User);
+const tokenRepository = AppDataSource.getRepository(Token);
 export const createAccessToken = (user) => {
-    return jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1d'});
+    return jwt.sign({
+        name : user.name,
+        email : user.email,
+    },
+        process.env.ACCESS_TOKEN_SECRET,
+        {expiresIn: '15m'});
+}
+
+export const createRefreshToken = (user) => {
+    return jwt.sign({
+            name : user.name,
+            email : user.email,
+        },
+        process.env.REFRESH_TOKEN_SECRET,
+        {expiresIn: '1d'});
 }
 
 const login = async (req, res) => {
@@ -21,9 +37,24 @@ const login = async (req, res) => {
         }
 
         const accessToken = createAccessToken(user);
+        const refreshToken = createRefreshToken(user);
 
-        let obj = {name: user.name, email: user.email}
-        return res.status(200).json({user: obj, accessToken})
+        let token = await tokenRepository.findOneBy({ user: user })
+        if (!token) {
+            await tokenRepository.save(Object.assign(new Token(), {
+                user: user,
+                refreshToken : refreshToken,
+            }))
+        } else {
+            await tokenRepository.save({
+                id: token.id,
+                user: user,
+                refreshToken : refreshToken,
+            })
+        }
+
+        res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 * 60 * 1000});
+        return res.status(200).json({ accessToken })
     } catch (error) {
         return error;
     }
@@ -66,10 +97,18 @@ const register = async (req, res) => {
 
         user.password = await bcrypt.hash(user.password, salt)
 
-        await userRepository.save(user);
+        let savedUser = await userRepository.save(user);
+
         const accessToken = createAccessToken(user);
-        let obj = {name: user.name, email: user.email}
-        return res.status(200).json({user: obj, accessToken})
+        const refreshToken = createRefreshToken(user);
+
+        await tokenRepository.save(Object.assign(new Token(), {
+            user: savedUser,
+            refreshToken : refreshToken,
+        }))
+
+        res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 * 60 * 1000});
+        return res.status(200).json({accessToken})
     } catch (error) {
         return error;
     }
