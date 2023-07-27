@@ -114,4 +114,20 @@ const register = async (req, res) => {
     }
 }
 
-module.exports = {login, register}
+const logout = async (req, res) => {
+    const cookies = req.cookies;
+    if (!cookies.jwt) return res.sendStatus(204);
+
+    const refreshToken = cookies.jwt;
+    const foundToken = await tokenRepository.findOneBy({refreshToken : refreshToken})
+    if (!foundToken) {
+        res.clearCookie('jwt', { httpOnly : true, maxAge: 24 * 60 * 60 * 1000 })
+        return res.sendStatus(204);
+    }
+
+    await tokenRepository.delete(foundToken)
+    res.clearCookie('jwt', { httpOnly : true, maxAge: 24 * 60 * 60 * 1000 })
+    res.sendStatus(204)
+}
+
+module.exports = {login, register, logout}
