@@ -6,12 +6,14 @@ const corsOptions = require('./config/corsOptions')
 const errorHandler = require('./middleware/errorHandler')
 require('dotenv').config()
 const cookieParser = require('cookie-parser')
+const credentials = require('./middleware/credentials')
 
 AppDataSource.initialize().then(async () => {
 
     const app = express()
     app.use(bodyParser.json())
     app.use(express.json());
+    app.use(credentials);
     app.use(cors(corsOptions));
     app.use(cookieParser())
     app.use('/auth', require('./routes/authRouter'));

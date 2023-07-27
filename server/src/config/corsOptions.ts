@@ -1,11 +1,9 @@
-const whitelist = [
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:3030',
-]
+// @ts-ignore
+const origins = require('./allowedOrigins')
 
 const corsOptions = {
     origin: (origin, callback) => {
-        if (whitelist.indexOf(origin) !== -1 || !origin) {
+        if (origins.indexOf(origin) !== -1 || !origin) {
             callback(null, true)
         } else {
             callback(new Error('Not allowed by CORS'));

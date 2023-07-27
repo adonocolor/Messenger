@@ -53,7 +53,7 @@ const login = async (req, res) => {
             })
         }
 
-        res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 * 60 * 1000});
+        res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 * 60 * 1000, sameSite: 'None', secure: true});
         return res.status(200).json({ accessToken })
     } catch (error) {
         return error;
@@ -107,7 +107,7 @@ const register = async (req, res) => {
             refreshToken : refreshToken,
         }))
 
-        res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 * 60 * 1000});
+        res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 * 60 * 1000, sameSite: 'None', secure: true});
         return res.status(200).json({accessToken})
     } catch (error) {
         return error;
@@ -126,7 +126,7 @@ const logout = async (req, res) => {
     }
 
     await tokenRepository.delete(foundToken)
-    res.clearCookie('jwt', { httpOnly : true, maxAge: 24 * 60 * 60 * 1000 })
+    res.clearCookie('jwt', { httpOnly : true, sameSite: 'None', secure: true})
     res.sendStatus(204)
 }
 
