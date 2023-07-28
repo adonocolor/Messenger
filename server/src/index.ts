@@ -21,8 +21,8 @@ AppDataSource.initialize().then(async () => {
     app.use('/refresh', require('./routes/refreshTokenRoute'));
     app.use(authenticateToken)
     app.use('/user', require('./routes/userRoute'))
+    app.use('/chat', require('./routes/chatRoute'))
     app.use(errorHandler)
-
     app.listen(3000)
     console.log("Express server has started on port 3000. Open http://localhost:3000/ to see results")
 

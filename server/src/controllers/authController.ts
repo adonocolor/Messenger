@@ -9,6 +9,7 @@ const userRepository = AppDataSource.getRepository(User);
 const tokenRepository = AppDataSource.getRepository(Token);
 export const createAccessToken = (user) => {
     return jwt.sign({
+        id : user.id,
         name : user.name,
         email : user.email,
     },
@@ -18,6 +19,7 @@ export const createAccessToken = (user) => {
 
 export const createRefreshToken = (user) => {
     return jwt.sign({
+            id : user.id,
             name : user.name,
             email : user.email,
         },

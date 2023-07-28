@@ -4,6 +4,7 @@ import {Like} from "typeorm";
 
 
 const userRepository = AppDataSource.getRepository(User);
+
 const getUsers = async (req, res) => {
     const users = await userRepository.find({
         where: [

@@ -13,20 +13,20 @@ export class Chat {
     @PrimaryGeneratedColumn()
     id: number
 
-    @ManyToMany((type) => User, {
-        cascade: true,
-    })
-    @JoinTable({
-        name: 'chats_users',
-        joinColumn: {
-            name: 'chats',
-            referencedColumnName: 'id',
+    @ManyToMany(type => User)
+    @JoinTable(
+        {
+            name: "chats_users",
+            joinColumn: {
+                name: "chatId",
+                referencedColumnName: "id"
             },
             inverseJoinColumn: {
-                name: 'users',
-                referencedColumnName: 'id',
-            },
-    })
+                name: "userId",
+                referencedColumnName: "id"
+            }
+        }
+    )
     participants: User[];
 
     @CreateDateColumn()
