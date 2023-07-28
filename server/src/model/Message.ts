@@ -15,8 +15,8 @@ export class Message {
     id: number
 
     @ManyToOne(
-        () => Chat
-    )
+        () => Chat,
+            chat => chat.messages)
     @JoinColumn({
         name: 'chatId',
     })

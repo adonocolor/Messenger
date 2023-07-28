@@ -2,11 +2,12 @@ import {
     CreateDateColumn,
     Entity,
     JoinTable,
-    ManyToMany,
+    ManyToMany, OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
 import {User} from "./User";
+import {Message} from "./Message";
 
 @Entity('chats')
 export class Chat {
@@ -34,4 +35,7 @@ export class Chat {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @OneToMany(type => Message, message => message.chat)
+    messages: Message[];
 }
