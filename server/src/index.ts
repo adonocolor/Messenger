@@ -10,7 +10,6 @@ const credentials = require('./middleware/credentials')
 const { authenticateToken } = require('./middleware/authenticateToken')
 
 AppDataSource.initialize().then(async () => {
-
     const app = express()
     app.use(bodyParser.json())
     app.use(express.json());
