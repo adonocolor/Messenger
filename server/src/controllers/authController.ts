@@ -55,8 +55,10 @@ const login = async (req, res) => {
             })
         }
 
+        delete user['password'];
+
         res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 * 60 * 1000, sameSite: 'None', secure: true});
-        return res.status(200).json({ accessToken })
+        return res.status(200).json({ user, accessToken })
     } catch (error) {
         return error;
     }
@@ -104,13 +106,16 @@ const register = async (req, res) => {
         const accessToken = createAccessToken(user);
         const refreshToken = createRefreshToken(user);
 
+
+
         await tokenRepository.save(Object.assign(new Token(), {
             user: savedUser,
             refreshToken : refreshToken,
         }))
+        delete user['password'];
 
         res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 * 60 * 1000, sameSite: 'None', secure: true});
-        return res.status(200).json({accessToken})
+        return res.status(200).json({user, accessToken})
     } catch (error) {
         return error;
     }
