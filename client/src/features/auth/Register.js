@@ -3,11 +3,12 @@ import {Button, Col, Form, Row, Stack} from "react-bootstrap";
 import '../../styles/form.scss'
 import {Link, useNavigate} from "react-router-dom";
 import {useRegisterMutation} from "./authApiSlice";
-import {useDispatch} from "react-redux";
-import {setCredentials} from "./authSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {selectCurrentToken, setCredentials} from "./authSlice";
 
 export const Register = () => {
-    const emailRef = useRef()
+    const token = useSelector(selectCurrentToken);
+    const nameRef = useRef()
     const errRef = useRef()
 
     const [email, setEmail] = useState('')
@@ -20,7 +21,10 @@ export const Register = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        emailRef.current.focus()
+        if (token !== null) {
+            navigate('/')
+        }
+        nameRef.current.focus()
     }, [])
 
     useEffect(() => {
@@ -55,7 +59,7 @@ export const Register = () => {
     const handleNameInput = (e) => setName(e.target.value)
 
 
-    const   content = isLoading ?
+    const content = isLoading ?
         <Row style={{
             justifyContent: "center",
             paddingTop: '15%',
@@ -71,9 +75,9 @@ export const Register = () => {
                             <Stack gap={3}>
                                 <h2>Sign Up</h2>
 
-                                <Form.Control onChange={handleNameInput} autoComplete={'off'} type={'text'}
+                                <Form.Control ref={nameRef} onChange={handleNameInput} autoComplete={'off'} type={'text'}
                                               placeholder={'Name'} name={'name'} required/>
-                                <Form.Control ref={emailRef} onChange={handleUserInput} autoComplete={'off'}
+                                <Form.Control onChange={handleUserInput} autoComplete={'off'}
                                               type={'email'} placeholder={'Email'} name={'email'} required/>
                                 <Form.Control onChange={handlePwdInput} type={'password'} placeholder={'Password'}
                                               name={'password'} required/>

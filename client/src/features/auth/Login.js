@@ -2,10 +2,11 @@ import React, {useEffect, useRef, useState} from "react";
 import {Button, Col, Form, Row, Stack} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {useLoginMutation} from "./authApiSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectCurrentToken, setCredentials} from "./authSlice";
 
 export const Login = () => {
+    const token = useSelector(selectCurrentToken);
     const emailRef = useRef()
     const errRef = useRef()
 
@@ -18,6 +19,9 @@ export const Login = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if (token !== null) {
+            navigate('/')
+        }
         emailRef.current.focus()
     }, [])
 
