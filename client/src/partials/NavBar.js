@@ -1,8 +1,36 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import {Navbar, Container, Nav, Stack} from "react-bootstrap";
+import {Link, useNavigate} from "react-router-dom";
+import {Navbar, Container, Nav, Stack, Button} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {logOut, selectCurrentToken} from "../features/auth/authSlice";
+import {useLogoutMutation} from "../features/auth/authApiSlice";
+
 export const NavBar = () => {
-    return (
+    const token = useSelector(selectCurrentToken);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [logout] = useLogoutMutation();
+    const signOff = async () => {
+        dispatch(logOut());
+        await logout();
+        navigate('/login');
+    }
+    const navigation = (
+        token !== null ?
+            <Button onClick={signOff} className={"text-decoration-none"}>
+                Log Out
+            </Button> :
+            <>
+            <Link to={"/register"} className={"text-decoration-none"}>
+                Sign Up
+            </Link>
+            <Link to={'/login'} className={"text-decoration-none"}>
+                Log In
+            </Link>
+            </>
+    );
+
+    const content = (
         <Navbar className={'topBar mb-4'}>
             <Container>
                 <h2>
@@ -12,16 +40,12 @@ export const NavBar = () => {
                 </h2>
                 <Nav>
                     <Stack direction={'horizontal'} gap={2}>
-                        <Link to={"/register"} className={"text-decoration-none"}>
-                            Sign Up
-                        </Link>
-                        <Link to={'/login'} className={"text-decoration-none"}>
-                            Log In
-                        </Link>
+                        {navigation}
                     </Stack>
                 </Nav>
             </Container>
         </Navbar>
-    );
+    )
+    return content;
 }
 

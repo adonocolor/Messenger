@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Button, Col, Form, Row, Stack} from "react-bootstrap";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useLoginMutation} from "./authApiSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {selectCurrentToken, setCredentials} from "./authSlice";
@@ -79,6 +79,9 @@ export const Login = () => {
                                     <Button className={'form__button'} variant={'primary'} type={'submit'}>
                                         Let me in!
                                     </Button>
+                                    <Link to={'/register'} className={"text-decoration-none"}>
+                                        Need to register an account?
+                                    </Link>
                                 </Stack>
                             </Col>
                         </Row>
