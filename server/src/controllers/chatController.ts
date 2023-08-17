@@ -53,7 +53,7 @@ const getChats = async (req, res) => {
 }
 
 const makeChat = async (req, res) => {
-    const foundUsers = await userRepository.find( {
+    let foundUsers = await userRepository.find( {
         where : {
             id : In([req.user.id, req.params.id])
         },
@@ -64,9 +64,12 @@ const makeChat = async (req, res) => {
         }
     })
 
-    if (await chatRepository.findOneBy({
-        participants : foundUsers
-    })) return res.sendStatus(204);
+    if (!foundUsers || foundUsers.length !== 2)
+        return res.sendStatus(404);
+
+    foundUsers = foundUsers.sort(function(a,b) {
+        return a.id - b.id
+    });
 
     const chat  = Object.assign(new Chat(), {
         participants : foundUsers,
