@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Button, Col, Form, Row, Stack} from "react-bootstrap";
+import {Button, Col, Form, FormFloating, FormLabel, Row, Stack} from "react-bootstrap";
 import '../../styles/form.scss'
 import {Link, useNavigate} from "react-router-dom";
 import {useRegisterMutation} from "./authApiSlice";
@@ -74,13 +74,21 @@ export const Register = () => {
                         <Col xs={5}>
                             <Stack gap={3}>
                                 <h2>Sign Up</h2>
-
-                                <Form.Control ref={nameRef} onChange={handleNameInput} autoComplete={'off'} type={'text'}
-                                              placeholder={'Name'} name={'name'} required/>
-                                <Form.Control onChange={handleUserInput} autoComplete={'off'}
-                                              type={'email'} placeholder={'Email'} name={'email'} required/>
-                                <Form.Control onChange={handlePwdInput} type={'password'} placeholder={'Password'}
-                                              name={'password'} required/>
+                                <FormFloating>
+                                    <Form.Control ref={nameRef} onChange={handleNameInput} autoComplete={'off'} type={'text'}
+                                                  placeholder={'Name'} name={'name'} required/>
+                                    <FormLabel>Name</FormLabel>
+                                </FormFloating>
+                                <FormFloating>
+                                    <Form.Control onChange={handleUserInput} autoComplete={'off'}
+                                                  type={'email'} placeholder={'Email'} name={'email'} required/>
+                                    <FormLabel>Email</FormLabel>
+                                </FormFloating>
+                                <FormFloating>
+                                    <Form.Control onChange={handlePwdInput} type={'password'} placeholder={'Password'}
+                                                  name={'password'} required/>
+                                    <FormLabel>Password</FormLabel>
+                                </FormFloating>
                                 <Button className={'form__button'} type={'sumbit'}>
                                     Register me!
                                 </Button>

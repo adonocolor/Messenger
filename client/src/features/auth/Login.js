@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Button, Col, Form, Row, Stack} from "react-bootstrap";
+import {Button, Col, Form, FormFloating, FormLabel, Row, Stack} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {useLoginMutation} from "./authApiSlice";
 import {useDispatch, useSelector} from "react-redux";
@@ -70,12 +70,17 @@ export const Login = () => {
                             <Col xs={5}>
                                 <Stack gap={3}>
                                     <h2>Log In</h2>
-
-                                    <Form.Control ref={emailRef} type={'email'} value={email} onChange={handleUserInput}
-                                                  autoComplete={'off'} placeholder={'Email'} name={'email'} required/>
-                                    <Form.Control type={'password'} onChange={handlePwdInput}
-                                                  value={password}
-                                                  placeholder={'Password'} name={'password'} required/>
+                                    <FormFloating>
+                                        <Form.Control ref={emailRef} type={'email'} value={email} onChange={handleUserInput}
+                                                      autoComplete={'off'} placeholder={'Email'} name={'email'} required/>
+                                        <FormLabel>Email</FormLabel>
+                                    </FormFloating>
+                                    <FormFloating>
+                                        <Form.Control type={'password'} onChange={handlePwdInput}
+                                                      value={password}
+                                                      placeholder={'Password'} name={'password'} required/>
+                                        <FormLabel>Password</FormLabel>
+                                    </FormFloating>
                                     <Button className={'form__button'} variant={'primary'} type={'submit'}>
                                         Let me in!
                                     </Button>
